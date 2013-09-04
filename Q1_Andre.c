@@ -35,7 +35,6 @@ void sortVector(int *vector)
 
 }
 
-
 void fillIndexTable(int indexTable[][2] , int *vector)
 {
 	int line, column;
