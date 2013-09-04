@@ -111,12 +111,43 @@ int findSpace(int *vector)
 }
 int insertElement(int matrix[][2],int *vector, int element)
 {		
-	int j, aux;
+	int i,j, aux,aux2,primaryIndex,indexNewElement;
 	int indexLength = 11;
 	int vectorLength = 101;
 
 	if(findSpace(vector)==1)
 	{
+			for(j = 0; j<indexLength && matrix[j][1]<=searchedElement;j++ )
+			{
+				primaryIndex = matrix[j][0];	
+			}
+		if (primaryIndex>0)
+			{
+				while(primaryIndex<=vectorLength && (vector[primaryIndex]<=element))
+				{
+					
+					if( element<vector[primaryIndex+1] && element > vector[primaryIndex])
+					{
+						indexNewElement=primaryIndex;
+						aux=vector[primaryIndex];
+						vector[primaryIndex]=element;
+								
+					}
+
+					primaryIndex++;
+				}
+
+				for(i=indexElment+1;i<vectorLength;i++)
+				{
+					aux2=vector[i];
+					vector[i]=aux;
+					aux=vector[i+1];
+					vector[i+3]=aux;
+					//fazer o uso de duas auxiliares --mt sono .. nao da mais nao ... vou dormir
+
+				}
+			}
+			printf(" valor inserido na posicao= %d \n",indexNewElement);
 
 	}else return -1;
 
