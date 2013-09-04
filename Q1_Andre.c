@@ -99,14 +99,45 @@ int searchElement(int matrix[][2], int *vector, int searchedElement)
 	return searchedIndex;	
 }
 
+int findSpace(int *vector)
+{
+	int result=-1,i;
+	int vectorLength=101;
+	for ( i = 0; i < vectorLength; i++)
+	{
+		if(vector[i]==-1) return 1;else continue;
+	}
+	return result;
+}
+int insertElement(int matrix[][2],int *vector, int element)
+{		
+	int j, aux;
+	int indexLength = 11;
+	int vectorLength = 101;
 
+	if(findSpace(vector)==1)
+	{
+
+	}else return -1;
+
+}
+int removeElement(int matrix[][2], int *vector, int element)
+{
+	int indexElment=searchElement(matrix,vector,element);
+	if (indexElment>=0)
+	{
+		vector[indexElment]=-1;
+		return 1;
+	}else return 0;
+}
 
 int main()
 {
 	srand(time(NULL));
 	int vector[101];
 	int indexTable[11][2]; 
-	int valorBusca, indiceValorEncontrado, i, searched_value;
+	int valorBusca, indiceValorEncontrado, i, searched_value,removed_value;
+	int removeReturn;
 
 	fillTable(vector);
 	
@@ -136,5 +167,27 @@ int main()
 	else
 		printf("Índice não encontrado \n");
 
+	
+
+	//Remocao -- sequencia de testes 
+
+	printf("Digite o valor a se removido\n");
+	scanf("%d",&removed_value);
+
+	removeReturn=removeElement(indexTable,vector,removed_value);
+
+
+	if (removeReturn==1)
+	{
+			for (i=0;i<=100;i++)
+		{
+			printf("Vector value [%d]=%d \n",i,vector[i]);
+		}
+		printf("\t\t\nÍndice do valor encontrado e removido: \n");
+	}
+	else
+		printf("Valor informado nao existe na lista \n");
+
+	
 	return 0;
 }
