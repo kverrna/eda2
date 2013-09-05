@@ -117,37 +117,40 @@ int insertElement(int matrix[][2],int *vector, int element)
 
 	if(findSpace(vector)==1)
 	{
-			for(j = 0; j<indexLength && matrix[j][1]<=searchedElement;j++ )
+			for(j = 0; j<indexLength && matrix[j][1]<=element;j++ )
 			{
 				primaryIndex = matrix[j][0];	
 			}
 		if (primaryIndex>0)
 			{
-				while(primaryIndex<=vectorLength && (vector[primaryIndex]<=element))
+				while(primaryIndex<=vectorLength && (vector[primaryIndex]<element))
 				{
 					
 					if( element<vector[primaryIndex+1] && element > vector[primaryIndex])
 					{
-						indexNewElement=primaryIndex;
-						aux=vector[primaryIndex];
-						vector[primaryIndex]=element;
+						indexNewElement=primaryIndex+1;
+						aux=vector[primaryIndex+1];
+						vector[primaryIndex+1]=element;
 								
 					}
 
 					primaryIndex++;
 				}
 
-				for(i=indexElment+1;i<vectorLength;i++)
+				for(i=indexNewElement+1;i<vectorLength;i++)
 				{
+
 					aux2=vector[i];
+					if(aux2==-1)aux2=vector[i+1];else continue;
 					vector[i]=aux;
-					aux=vector[i+1];
-					vector[i+3]=aux;
-					//fazer o uso de duas auxiliares --mt sono .. nao da mais nao ... vou dormir
+					aux=aux2;
+				
 
 				}
 			}
 			printf(" valor inserido na posicao= %d \n",indexNewElement);
+			
+			return 1;
 
 	}else return -1;
 
@@ -168,8 +171,8 @@ int main()
 	int vector[101];
 	int indexTable[11][2]; 
 	int valorBusca, indiceValorEncontrado, i, searched_value,removed_value;
-	int removeReturn;
-
+	int removeReturn,insertedElement;
+	
 	fillTable(vector);
 	
 	for (i=0;i<=100;i++)
@@ -187,9 +190,12 @@ int main()
 	fillIndexTable(indexTable,vector);
 	
 	show(indexTable);
-	
+
+
+	// Uso do codigo pelo usuario
 	printf("Digite o valor a ser pesquisado\n");
 	scanf("%d",&searched_value);
+
 
 	indiceValorEncontrado = searchElement(indexTable, vector, searched_value);
 
@@ -219,6 +225,19 @@ int main()
 	else
 		printf("Valor informado nao existe na lista \n");
 
-	
+
+
+	printf("\n\nDigite o valor a ser inserido\n");
+	scanf("%d",&insertedElement);
+
+	int resultadoInsert=insertElement(indexTable,vector,insertedElement);
+
+	if(resultadoInsert==1) printf("valor inserido com Sucesso\n");else printf("Deu merda\n");
+		for (i=0;i<=100;i++)
+		{
+			printf("Vector value [%d]=%d \n",i,vector[i]);
+		}
+
+
 	return 0;
 }
