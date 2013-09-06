@@ -125,7 +125,7 @@ int findSpace(int *vector)
 
 int insertElement(int matrix[][2],int *vector, int element)
 {		
-	int i,j, aux,aux2,primaryIndex,indexNewElement;
+	int i,j, aux,aux2,indexNewElement;
 	int indexLength = 11;
 	int vectorLength = 101;
 	int primaryIndexSup,primaryIndexInf;
@@ -134,63 +134,55 @@ int insertElement(int matrix[][2],int *vector, int element)
 	{
 		for(j = 0; j<indexLength && matrix[j][1]<=element;j++ )
 		{
-			primaryIndex = matrix[j][0];
+			
 
 			primaryIndexSup=matrix[j+1][0];
 			primaryIndexInf=matrix[j][0];	
 		}
 		printf("\n\tprimaryIndexInf :%d\nprimaryIndexSup%d\n",primaryIndexInf,primaryIndexSup);
-		if (primaryIndex>0)
-			{/*
+		if (primaryIndexInf>=0)
+			{
+					for(i=primaryIndexInf;i<=primaryIndexSup;i++)
+							{
 
-				while(primaryIndex<=vectorLength && (vector[primaryIndex]<element))
+								if(vector[i]==-1 && element>vector[i-1] && element<vector[i+1])
+									{
+										indexNewElement=i;
+										vector[i]=element;
+										aux=-1;
+												}else 
+													if(element<vector[i+1] && element>vector[i])
+													{
+														indexNewElement=i+1;
+														aux=vector[i+1];
+														vector[i+1]=element;
+
+												}else continue;
+											}
+
+				if(aux!=-1)
 				{
-
-					if( element<vector[primaryIndex+1] && element > vector[primaryIndex])
+					for(i=indexNewElement+1;i<vectorLength;i++)
 					{
-						indexNewElement=primaryIndex+1;
-						aux=vector[primaryIndex+1];
-						vector[primaryIndex+1]=element;
+
+						aux2=vector[i];
+						if(aux2==-1)aux2=vector[i+1];else continue;
+						vector[i]=aux;
+						aux=aux2;
+
 
 					}
 
-					primaryIndex++;
-				}
-			*/
-				for(i=primaryIndexInf;i<=primaryIndexSup;i++)
+				}else
 				{
-					if(vector[i]==-1 && element>vector[i-1] && element<vector[i+1])
-					{
-						indexNewElement=i;
-						vector[i]=element;
-						aux=-1;
-					}else 
-					if(element<vector[i+1] && element>vector[i])
-					{
-						indexNewElement=i+1;
-						aux=vector[i+1];
-						vector[i+1]=element;
+					fillIndexTable(matrix,vector);
+					printf(" valor inserido na posicao= %d \n",indexNewElement);
+					return 1;
+				} 
 
-					}else continue;
-				}
-
-			if(aux!=-1)
-			{
-				for(i=indexNewElement+1;i<vectorLength;i++)
-				{
-
-					aux2=vector[i];
-					vector[i]=aux;
-					aux=aux2;
-
-
-				}
-
-			}else return 1;
-
-			fillIndexTable(matrix,vector);
-			printf(" valor inserido na posicao= %d \n",indexNewElement);
-			return 1;
+				fillIndexTable(matrix,vector);
+				printf(" valor inserido na posicao= %d \n",indexNewElement);
+				return 1;
 			}else return -1;
 			
 			
@@ -249,9 +241,9 @@ int main()
 				indiceValorEncontrado = searchElement(indexTable, vector, value);
 
 				if (indiceValorEncontrado >= 0)
-				printf("Índice do valor encontrado: %d \n",indiceValorEncontrado);
+					printf("Índice do valor encontrado: %d \n",indiceValorEncontrado);
 				else
-				printf("Índice não encontrado \n");
+					printf("Índice não encontrado \n");
 
 			};break;
 			case 2:
@@ -260,9 +252,9 @@ int main()
 				scanf("%d",&value);
 				indiceValorEncontrado=removeElement(indexTable,vector,value);
 				if (indiceValorEncontrado == 1)
-				printf("Valor removido com sucesso!");
+					printf("Valor removido com sucesso!");
 				else
-				printf("Tem certeza que voce viu esse valor na lista? olha de novo =D \n");
+					printf("Tem certeza que voce viu esse valor na lista? olha de novo =D \n");
 
 
 			};break;
@@ -272,9 +264,9 @@ int main()
 				scanf("%d",&value);
 				indiceValorEncontrado=insertElement(indexTable,vector,value);
 				if (indiceValorEncontrado == 1)
-				printf("Valor inserido com sucesso!");
+					printf("Valor inserido com sucesso!");
 				else
-				printf("Nao tem espaco  \n");
+					printf("Nao tem espaco  \n");
 			}break;
 
 
