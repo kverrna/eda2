@@ -12,33 +12,37 @@ typedef struct vector{
     int length;
 } Vector ;
 
-void fillTable(int *vector)
+void fillTable(Vector *vector)
 {
 	printf("Filling the Vector.................................\n");
-	int j;
+	int indice;
 	sleep(1);
-	for (j=0;j<10;j++)
+	for (indice=0;indice<10;indice++)
 	{
-		vector[j] = rand() % 100 + 1;
+		vector->vect[indice] = rand() % 100 + 1;
 		
 	}
+	vector->qtd = 10;
+	vector->length = 10;
+	vector->head = 0;
+	vector->tail = 9;
 }
 
-int searchElement(int *vector, int head, int tail, int element)
+int searchElement(Vector *vector, int element)
 {
 	int initialElement, finalElement, middle;
-	initialElement = head;
-	finalElement = tail;	
+	initialElement = vector->head;
+	finalElement = vector->tail;	
 
 	while (initialElement<=finalElement)
 	{
 		middle = initialElement + ( finalElement - initialElement)/ 2 ;
 
-		if (vector[middle] == element)
+		if (vector->vect[middle] == element)
 			return middle;
 		else
 		{
-			if (element > vector[middle])
+			if (element > vector->vect[middle])
 				initialElement = middle + 1;
 			else
 				finalElement = middle - 1;
@@ -47,51 +51,85 @@ int searchElement(int *vector, int head, int tail, int element)
 	return -1;
 }
 
-int removeElement (int *vector, int head, int tail, int element)
-{
-
-	int index,i;
-	index = searchElement(vector, head, tail, element);
-	if(index>=0)
-	{
-		for (i=0;i<10;i++)
-		{
-			
-		}
-	}
-
-	
-
-}
-
-void showVector(int *vector)
-{
-	int k;	
-	int length = 10;
-
-	for(k=0;k<length;k++)
-	{
-		printf("Vector value [%d]=%d \n",k,vector[k]);
-	}
-
-}
-
-void sortVector(int *vector)
+void sortVector(Vector *vector)
 {
 	int k=0, j=0, temporaria;
 	printf("Sorting the Vector.................................\n");
-	for(k=0;k<10;k++)
+	
+	for(k=0;k<=vector->qtd;k++)
 	{
-		for(j=k+1;j<10;j++)
+		for(j=k+1;j<=vector->qtd;j++)
 		{
-		if(vector[k]>vector[j])
+		if(vector->vect[k]>vector->vect[j])
 		{
-			temporaria=vector[k];
-			vector[k]=vector[j];
-			vector[j]=temporaria;
+			temporaria=vector->vect[k];
+			vector->vect[k]=vector->vect[j];
+			vector->vect[j]=temporaria;
 			}
 		}
 	}	
+
+}
+
+void showVector(Vector *vector)
+{
+	int k;	
+	int length = vector->qtd;
+
+	printf("HEAD: %d TAIL %d \n",vector->head,vector->tail);
+
+	for(k=0;k<length;k++)
+	{
+		printf("Vector value [%d]=%d \n",k,vector->vect[k]);
+	}
+
+}
+
+int removeElement (Vector *vector, int element)
+{
+
+	int index,i;
+	index = searchElement(vector, element);
+	if(index>=0)
+	{
+		if (vector->vect[index] == vector->vect[vector->tail])
+			vector->tail--;
+
+		for (i=index;i<9;i++)
+		{
+			vector->vect[i] = vector->vect[i+1];
+		}
+
+		vector->vect = (int*) realloc ( vector->vect , sizeof( int ) * (vector->qtd - 1));
+		vector->qtd = vector->qtd - 1;
+		printf("---------QTD VECTOR: %d---------\n", vector->qtd);
+		printf("Tamanho do Vetor: %d\n", vector->length);	
+		showVector(vector);	
+		return 1;
+			
+	}
+	return 0;
+
+}
+
+
+int insertElement(Vector *vector, int element)
+{
+	
+	int index;
+	if (vector->qtd < vector->length)
+	{
+		vector->vect = (int*) realloc ( vector->vect , sizeof( int ) * (vector->qtd + 1));
+		printf("---------QTD VECTOR: %d---------\n", vector->qtd);	
+		vector->vect[vector->qtd] = element;
+		vector->qtd = vector->qtd + 1;
+		sortVector(vector);
+		showVector(vector);
+		return 1;		
+
+	}
+	else
+		return 0;
 
 }
 
@@ -126,28 +164,44 @@ int main()
 
 	srand(time(NULL));
 	Vector *vector;	
-	int value,index;
+	int value,index,resposta;
 	
 	vector = vectorCreate(10);
 	
-	fillTable(vector->vect);
-	sortVector(vector->vect);
-	showVector(vector->vect);
+	fillTable(vector);
+	sortVector(vector);
+	showVector(vector);
 
-	vector->head = 0;
-	vector->tail = 9;
-
-	printf("HEAD: %d TAIL %d \n",vector->head,vector->tail);
 	
 	printf("Informe um número a ser pesquisado\n");
 	scanf("%d",&value);
 
-	index = searchElement(vector->vect, vector->head, vector->tail, value);
+	index = searchElement(vector, value);
 	
 	if(index>=0)
 		printf("Index Encontrado: %d\n", index);
 	else
 		printf("Valor não encontrado\n");
+
+	printf("Digite um valor a ser removido\n");
+	scanf("%d",&value);
+	
+	resposta = removeElement (vector, value);
+	
+	if(resposta == 1)
+		printf("Valor Removido com Sucesso!!!!!!\n");
+	else
+		printf(" Valor a ser removido não existe, tente novamente\n");
+
+	printf("Informe um número a ser inserido\n");
+	scanf("%d",&value);
+
+	index = insertElement(vector, value);
+	
+	if(index == 1)
+		printf("Inserido\n");
+	else
+		printf("Não inserido - Falta de Espaço\n");
 
 	return 0;
 
