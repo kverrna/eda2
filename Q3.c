@@ -17,15 +17,13 @@ void fillTable(Vector *vector)
 	printf("Filling the Vector.................................\n");
 	int indice;
 	sleep(1);
-	for (indice=0;indice<10;indice++)
+	for (indice=0;indice<vector->length;indice++)
 	{
-		vector->vect[indice] = rand() % 100 + 1;
-		
+		vector->vect[indice] = indice + 1;
+		vector->qtd = vector->qtd + 1;	
 	}
-	vector->qtd = 10;
-	vector->length = 10;
 	vector->head = 0;
-	vector->tail = 9;
+	vector->tail = vector->length - 1;
 }
 
 int searchElement(Vector *vector, int element)
@@ -36,7 +34,7 @@ int searchElement(Vector *vector, int element)
 
 	while (initialElement<=finalElement)
 	{
-		middle = initialElement + ( finalElement - initialElement)/ 2 ;
+		middle = initialElement + (( finalElement - initialElement) / (vector->vect[finalElement] - vector->vect[initialElement]) * (element -vector->vect[initialElement])) ;
 
 		if (vector->vect[middle] == element)
 			return middle;
@@ -47,7 +45,7 @@ int searchElement(Vector *vector, int element)
 			else
 				finalElement = middle - 1;
 		}		
-	}	
+	}
 	return -1;
 }
 
@@ -166,10 +164,10 @@ int main()
 	Vector *vector;	
 	int value,index,resposta;
 	
-	vector = vectorCreate(10);
+	vector = vectorCreate(100);
 	
 	fillTable(vector);
-	sortVector(vector);
+	//sortVector(vector);
 	showVector(vector);
 
 	
@@ -182,6 +180,10 @@ int main()
 		printf("Index Encontrado: %d\n", index);
 	else
 		printf("Valor não encontrado\n");
+	
+	return 0;
+
+	/*
 
 	printf("Digite um valor a ser removido\n");
 	scanf("%d",&value);
@@ -202,7 +204,7 @@ int main()
 		printf("Inserido\n");
 	else
 		printf("Não inserido - Falta de Espaço\n");
-
-	return 0;
+	*/
+	
 
 }
