@@ -44,9 +44,22 @@ void fillIndexTable(int indexTable[][2] , int *vector)
 		for(column = 0 ; column < 2 ; column++)
 		{
 			if (column == 0)
+
 				indexTable[line][column] = line * 10;
 			else
-				indexTable[line][column] = vector[line * 10 ];
+				{
+					indexTable[line][column] = vector[line * 10 ];
+				}
+
+				
+				if(vector[line*10]==-1 )
+				{
+					indexTable[line][0] = (line * 10)+1;
+					indexTable[line][1] = vector[(line * 10)+1 ];
+				}else continue;
+
+
+					
 		}
 	}
 }
@@ -99,14 +112,110 @@ int searchElement(int matrix[][2], int *vector, int searchedElement)
 	return searchedIndex;	
 }
 
+int findSpace(int *vector)
+{
+	int result=-1,i;
+	int vectorLength=101;
+	for ( i = 0; i < vectorLength; i++)
+	{
+		if(vector[i]==-1) return 1;else continue;
+	}
+	return result;
+}
+
+int insertElement(int matrix[][2],int *vector, int element)
+{		
+	int i,j, aux,aux2,primaryIndex,indexNewElement;
+	int indexLength = 11;
+	int vectorLength = 101;
+	int primaryIndexSup,primaryIndexInf;
+
+	if(findSpace(vector)==1)
+	{
+		for(j = 0; j<indexLength && matrix[j][1]<=element;j++ )
+		{
+			primaryIndex = matrix[j][0];
+
+			primaryIndexSup=matrix[j+1][0];
+			primaryIndexInf=matrix[j][0];	
+		}
+		printf("\n\tprimaryIndexInf :%d\nprimaryIndexSup%d\n",primaryIndexInf,primaryIndexSup);
+		if (primaryIndex>0)
+			{/*
+
+				while(primaryIndex<=vectorLength && (vector[primaryIndex]<element))
+				{
+
+					if( element<vector[primaryIndex+1] && element > vector[primaryIndex])
+					{
+						indexNewElement=primaryIndex+1;
+						aux=vector[primaryIndex+1];
+						vector[primaryIndex+1]=element;
+
+					}
+
+					primaryIndex++;
+				}
+			*/
+				for(i=primaryIndexInf;i<=primaryIndexSup;i++)
+				{
+					if(vector[i]==-1 && element>vector[i-1] && element<vector[i+1])
+					{
+						indexNewElement=i;
+						vector[i]=element;
+						aux=-1;
+					}else 
+					if(element<vector[i+1] && element>vector[i])
+					{
+						indexNewElement=i+1;
+						aux=vector[i+1];
+						vector[i+1]=element;
+
+					}else continue;
+				}
+
+			if(aux!=-1)
+			{
+				for(i=indexNewElement+1;i<vectorLength;i++)
+				{
+
+					aux2=vector[i];
+					vector[i]=aux;
+					aux=aux2;
 
 
+				}
+
+			}else return 1;
+
+			fillIndexTable(matrix,vector);
+			printf(" valor inserido na posicao= %d \n",indexNewElement);
+			return 1;
+			}else return -1;
+			
+			
+
+	}else return -1;
+
+}
+
+int removeElement(int matrix[][2], int *vector, int element)
+{
+	int indexElment=searchElement(matrix,vector,element);
+	if (indexElment>=0)
+	{
+		vector[indexElment]=-1;
+		fillIndexTable(matrix,vector);
+		return 1;
+	}else return 0;
+}
 int main()
 {
 	srand(time(NULL));
 	int vector[101];
 	int indexTable[11][2]; 
-	int valorBusca, indiceValorEncontrado, i, searched_value;
+	int valorBusca, indiceValorEncontrado, i, value;
+	int opt;
 
 	fillTable(vector);
 	
@@ -125,16 +234,66 @@ int main()
 	fillIndexTable(indexTable,vector);
 	
 	show(indexTable);
+
+	opt=0;
+	while(opt!=-1)
+	{
+		printf("\nDigite \n1:Para buscar\n2:Para Remover\n3:Para inserir\n-1:Para sair\n\n=>:");
+		scanf("%d",&opt);
+		switch(opt)
+		{
+			case 1:
+			{
+				printf("Digite o valor a ser pesquisado\n");
+				scanf("%d",&value);
+				indiceValorEncontrado = searchElement(indexTable, vector, value);
+
+				if (indiceValorEncontrado >= 0)
+				printf("Índice do valor encontrado: %d \n",indiceValorEncontrado);
+				else
+				printf("Índice não encontrado \n");
+
+			};break;
+			case 2:
+			{
+				printf("Digite o valor a ser removido\n");
+				scanf("%d",&value);
+				indiceValorEncontrado=removeElement(indexTable,vector,value);
+				if (indiceValorEncontrado == 1)
+				printf("Valor removido com sucesso!");
+				else
+				printf("Tem certeza que voce viu esse valor na lista? olha de novo =D \n");
+
+
+			};break;
+			case 3:
+			{
+				printf("Digite o valor a ser inserido\n");
+				scanf("%d",&value);
+				indiceValorEncontrado=insertElement(indexTable,vector,value);
+				if (indiceValorEncontrado == 1)
+				printf("Valor inserido com sucesso!");
+				else
+				printf("Nao tem espaco  \n");
+			}break;
+
+
+
+			
+		}
+		
+		for (i=0;i<=100;i++)
+		{
+			printf("Vector value [%d]=%d \n",i,vector[i]);
+		}
+
+		show(indexTable);
+		
+
+		
+
+	}
 	
-	printf("Digite o valor a ser pesquisado\n");
-	scanf("%d",&searched_value);
-
-	indiceValorEncontrado = searchElement(indexTable, vector, searched_value);
-
-	if (indiceValorEncontrado >= 0)
-		printf("Índice do valor encontrado: %d \n",indiceValorEncontrado);
-	else
-		printf("Índice não encontrado \n");
 
 	return 0;
 }

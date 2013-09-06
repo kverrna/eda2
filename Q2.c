@@ -164,45 +164,70 @@ int main()
 
 	srand(time(NULL));
 	Vector *vector;	
-	int value,index,resposta;
+	int value,index,resposta,opt;
 	
 	vector = vectorCreate(10);
 	
 	fillTable(vector);
 	sortVector(vector);
-	showVector(vector);
+ 	showVector(vector);
 
-	
-	printf("Informe um número a ser pesquisado\n");
-	scanf("%d",&value);
+	opt=0;
+	while(opt!=-1)
+	{
+		
+		printf("\nDigite \n1:Para buscar\n2:Para Remover\n3:Para inserir\n-1:Para sair\n\n=>:");
+		scanf("%d",&opt);
 
-	index = searchElement(vector, value);
-	
-	if(index>=0)
-		printf("Index Encontrado: %d\n", index);
-	else
-		printf("Valor não encontrado\n");
+		switch(opt)
+		{
 
-	printf("Digite um valor a ser removido\n");
-	scanf("%d",&value);
-	
-	resposta = removeElement (vector, value);
-	
-	if(resposta == 1)
-		printf("Valor Removido com Sucesso!!!!!!\n");
-	else
-		printf(" Valor a ser removido não existe, tente novamente\n");
+			case 1:
+			{
+				printf("Informe um número a ser pesquisado\n");
+				scanf("%d",&value);
+				index = searchElement(vector, value);
+				if(index>=0)
+					printf("Index Encontrado: %d\n", index);
+				else
+					printf("Valor não encontrado\n");
 
-	printf("Informe um número a ser inserido\n");
-	scanf("%d",&value);
+			};break;
+			case 2:
+			{
+				printf("Digite um valor a ser removido\n");
+				scanf("%d",&value);
 
-	index = insertElement(vector, value);
+				resposta = removeElement (vector, value);
+
+				if(resposta == 1)
+					printf("Valor Removido com Sucesso!!!!!!\n");
+				else
+					printf(" Valor a ser removido não existe, tente novamente\n");
+
+			};break;
+			case 3:
+			{
+				printf("Informe um número a ser inserido\n");
+				scanf("%d",&value);
+				index = insertElement(vector, value);
+		
+				if(index == 1)
+					printf("Inserido\n");
+				else
+					printf("Não inserido - Falta de Espaço\n");
+
+			};break;
+			
+
+		}
+
+	}
 	
-	if(index == 1)
-		printf("Inserido\n");
-	else
-		printf("Não inserido - Falta de Espaço\n");
+	
 
 	return 0;
+	
+
 
 }

@@ -164,24 +164,34 @@ int main()
 	Vector *vector;	
 	int value,index,resposta;
 	
-	vector = vectorCreate(100);
-	
-	fillTable(vector);
-	//sortVector(vector);
-	showVector(vector);
+	int lengthVector=1;
 
 	
-	printf("Informe um número a ser pesquisado\n");
-	scanf("%d",&value);
+	while(lengthVector>0)
+	{
+		printf("Qual o valor do vetor que vc quer?\nDigite -1 para sair\n");
+		scanf("%d",&lengthVector);
+		vector = vectorCreate(lengthVector);
+		
+		fillTable(vector);
+		//sortVector(vector);
+		showVector(vector);
+9
+		
+		printf("Informe um número a ser pesquisado\n");
+		scanf("%d",&value);
 
-	index = searchElement(vector, value);
-	
-	if(index>=0)
-		printf("Index Encontrado: %d\n", index);
-	else
-		printf("Valor não encontrado\n");
-	
+		index = searchElement(vector, value);
+		
+		if(index>=0)
+			printf("Index Encontrado: %d\n", index);
+		else
+			printf("Valor não encontrado\n");
+		
+		 
+	}
 	return 0;
+
 
 	/*
 
