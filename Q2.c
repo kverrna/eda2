@@ -4,6 +4,14 @@
 #include <time.h>
 #include <unistd.h>
 
+typedef struct vector{
+    int *vect;
+    int head;
+    int tail;
+    int qtd;
+    int length;
+} Vector ;
+
 void fillTable(int *vector)
 {
 	printf("Filling the Vector.................................\n");
@@ -39,11 +47,20 @@ int searchElement(int *vector, int head, int tail, int element)
 	return -1;
 }
 
-int removeElement (int *vector, int element)
+int removeElement (int *vector, int head, int tail, int element)
 {
 
-	int index;
-	index = searchElement(int *vector, int head, int tail, int element);
+	int index,i;
+	index = searchElement(vector, head, tail, element);
+	if(index>=0)
+	{
+		for (i=0;i<10;i++)
+		{
+			
+		}
+	}
+
+	
 
 }
 
@@ -78,25 +95,54 @@ void sortVector(int *vector)
 
 }
 
+Vector * vectorCreate(int length){
+    
+	Vector * vector;
+	vector = (Vector*) malloc ( sizeof( Vector ) );
+ 
+	if(!vector)
+	{
+      		return NULL; 
+   	}
+ 
+
+    	vector->vect = (int*) malloc ( sizeof( int ) * length );
+ 
+   	if(!vector->vect)
+	{
+      		return NULL; 
+   	}
+ 
+	vector->head = 0;
+	vector->qtd = 0;
+	vector->tail = 0;
+	vector->length = length;
+	 
+	return vector;
+}
+
 int main()
 {
 
-	srand(time(NULL));	
-	int vector[10], head, tail,value,index;
+	srand(time(NULL));
+	Vector *vector;	
+	int value,index;
+	
+	vector = vectorCreate(10);
+	
+	fillTable(vector->vect);
+	sortVector(vector->vect);
+	showVector(vector->vect);
 
-	fillTable(vector);
-	sortVector(vector);
-	showVector(vector);
+	vector->head = 0;
+	vector->tail = 9;
 
-	head = 0;
-	tail = 9;
-
-	printf("HEAD: %d TAIL %d \n",head,tail);
+	printf("HEAD: %d TAIL %d \n",vector->head,vector->tail);
 	
 	printf("Informe um número a ser pesquisado\n");
 	scanf("%d",&value);
 
-	index = searchElement(vector, head, tail, value);
+	index = searchElement(vector->vect, vector->head, vector->tail, value);
 	
 	if(index>=0)
 		printf("Index Encontrado: %d\n", index);
