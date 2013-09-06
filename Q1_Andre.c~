@@ -80,7 +80,7 @@ int searchElement(int matrix[][2], int *vector, int searchedElement)
 
 	printf("Primary Index = %d\n ",primaryIndex);
 
-	if (primaryIndex>=0)
+	if (primaryIndex>0)
 	{
 		printf("Searching in the Vector................................\n");
 
